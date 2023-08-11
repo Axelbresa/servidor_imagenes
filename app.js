@@ -21,6 +21,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.set("views", "./src/views");
 
 app.use(express.static(path.join(__dirname,"public")))
@@ -35,12 +36,28 @@ app.use(
 );
 app.use(morgan("dev"));
 
+app.use(express.static(path.join(__dirname,"public")))
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
+app.use(morgan("dev"));
+
+//configuración de File Upload
+app.use(fileUpload());
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+
 //setting
 const PORT = process.env.PORT || 3200;
 // const rutas = require("./routes/users.routes");
@@ -48,7 +65,6 @@ const PORT = process.env.PORT || 3200;
 app.use('/', require('./src/routes/galleries.routes'));
 
 //static files
- app.use(express.static(path.join(__dirname,"public")))
 
 // app.use((req, res)=>{
 //   res.sendFile(path.join(__dirname,"../public/index.html"))
