@@ -51,7 +51,7 @@ const Reserva = sequelize.define(
 );
 
 // Crear tabla si no existe ({force: true} borra y crea la tabla)
-Reserva.sync({ force: false }).then(() => {
+Reserva.sync({ force: true }).then(() => {
   console.log("Tabla de Reservas creada");
 });
 
