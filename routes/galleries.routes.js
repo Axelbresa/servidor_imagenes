@@ -13,11 +13,9 @@ const {
 const router = Router();
 
 //Vistas
-router.get("/a"), (_req, _res)=>{
-  console.log("hola");
-}
 router.get("/", indexView);
 router.get("/create", createView);
+
 // API CRUD
 router.get("/api", index);
 router.get("/api/:id/show", show);

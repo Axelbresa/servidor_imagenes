@@ -1,6 +1,9 @@
-<%- include('partials/header') %>
+<%- include('../layouts/head.ejs') ;%>
+
+
+
 <body class="h-100 d-flex flex-column">
-    <%- include('../partials/nav'); %>
+    <%- include('../layouts/nav'); %>
     <div id="alertBanner" class="alert alert-warning alert-dismissible fade" role="alert">
         <span id="bannerMessage"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -20,8 +23,8 @@
             </section>
         </main>
     </div>
-    <%- include('../partials/footer'); %>
-    <script src="/public/index.js"></script>
+    <%- include('../layouts/footer'); %>
+    <script src="/js/index.js"></script>
 </body>
 
 </html>

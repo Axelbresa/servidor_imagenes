@@ -1,42 +1,27 @@
-// Imports
 const express = require("express");
+const dotenv = require("dotenv");
 const cors = require("cors");
-const morgan = require("morgan");
 const helmet = require("helmet");
+const morgan = require("morgan");
 const path = require("path");
-const cloudinary = require('cloudinary').v2;
+const fileUpload = require('express-fileupload');
 
-// const cloudinary = require("cloudinary");
-const fileUpload = require("express-fileupload");
-require("dotenv").config();
-require("ejs");
-const { sequelize } = require("./src/database/db");
+//variables de entorno
+dotenv.config({ path: ".env" });
+
+
+// Se importa la instancia de conexión a la base de datos - (debe ser después de leer las variables de entorno)
+const { sequelize } = require('./database/config');
 
 
 const app = express();
 
-// Middlewares
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
+//configuración del motor de plantillas
 app.set("views", path.join(__dirname, "views"));
-app.set("views", "./src/views");
+app.set("view engine", "ejs");
 
-app.use(express.static(path.join(__dirname,"public")))
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(fileUpload)
-app.use(cors());
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
-app.use(morgan("dev"));
-
-app.use(express.static(path.join(__dirname,"public")))
+//Carpeta public para archivos estaticos
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -51,38 +36,15 @@ app.use(morgan("dev"));
 //configuración de File Upload
 app.use(fileUpload());
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+// Se ejecuta una instancia de conexión a la base de datos
+sequelize.authenticate()
+  .then(() => { 
+    console.log('Conexión a base de datos exitosa');
+ })
+  .catch((error) => console.log('Error al conectar a base de datos', error));
+
+app.use("/", require("./routes/galleries.routes"));
+
+app.listen(process.env.PORT, () => {
+  console.log(`Servidor en ${process.env.APP_URL}:${process.env.PORT}`);
 });
-
-
-//setting
-const PORT = process.env.PORT || 3200;
-// const rutas = require("./routes/users.routes");
-// app.use(rutas);
-app.use('/', require('./src/routes/galleries.routes'));
-
-//static files
-
-// app.use((req, res)=>{
-//   res.sendFile(path.join(__dirname,"../public/index.html"))
-// })
-
-
-
-//arrancampos el servidor
-app.listen(PORT, function (req, res) {
-  console.log("la app esta escuchando en http://localhost: " + PORT);
-});
-
-//conexion a la base de datos
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("nos hemos conectado a la base de datos");
-  })
-  .catch((error) => {
-    console.log("se ha producido un error", error);
-  });

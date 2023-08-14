@@ -1,15 +1,16 @@
 {
-  "name": "server",
+  "name": "sv_file_upload",
   "version": "1.0.0",
-  "description": "",
+  "description": "Galería / Servidor de archivos con Cloudinary",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Alejandro RD",
   "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
   "dependencies": {
     "cloudinary": "^1.40.0",
     "cors": "^2.8.5",
@@ -19,11 +20,7 @@
     "express-fileupload": "^1.4.0",
     "helmet": "^7.0.0",
     "morgan": "^1.10.0",
-    "mysql2": "^3.5.2",
-    "path": "^0.12.7",
+    "mysql2": "^3.6.0",
     "sequelize": "^6.32.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.22"
   }
 }
