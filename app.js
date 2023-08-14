@@ -36,6 +36,8 @@ app.use(morgan("dev"));
 //configuración de File Upload
 app.use(fileUpload());
 
+const PORT = process.env.PORT || 3200;
+
 // Se ejecuta una instancia de conexión a la base de datos
 sequelize.authenticate()
   .then(() => { 
@@ -45,6 +47,6 @@ sequelize.authenticate()
 
 app.use("/", require("./routes/galleries.routes"));
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, function (req, res)  {
   console.log(`Servidor en ${process.env.APP_URL}:${process.env.PORT}`);
 });
