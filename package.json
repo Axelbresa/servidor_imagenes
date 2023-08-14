@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.js"
   },
-  "author": "Alejandro RD",
+  "author": "Axel bresanovich",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.0.1"
