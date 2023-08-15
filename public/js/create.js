@@ -14,7 +14,7 @@ uploadForm.addEventListener("submit", async function (e) {
   fd.append("image", image.files[0]);
 
   try {
-    const response = await fetch("http://localhost:3200/api", {
+    const response = await fetch("/api", {
       method: "POST",
       body: fd,
     });

@@ -20,6 +20,7 @@ const index = async (req, res) => {
     if (!images || images.length === 0) {
       throw {
         status: 404,
+        
         message: "No hay imagenes registradas aún.",
       };
     }
@@ -66,6 +67,12 @@ const store = async (req, res) => {
       .json({ mensaje: "La imagen ya existe en la base de datos." });
   }
 
+  if (!image.mimetype.startsWith('image')) {
+    return res.status(400).json({
+      mensaje: 'Debe mandar una imagen'
+    })
+  }
+
   const uploadPath = path.join(__dirname, "../files/", image.name);
 
   image.mv(uploadPath, function (err) {
@@ -81,9 +88,14 @@ const store = async (req, res) => {
     public_id,
     version_id,
     created_at,
-  } = await cloudinary.uploader.upload(uploadPath).catch((error) => {
+  } = await cloudinary.uploader.upload(uploadPath)
+  .then(result => {
+    console.log(result);
+    return result;
+  })
+  .catch((error) => {
     console.log(error);
-    res.status(500).json(error);
+    res.status(400).json(error);
   });
 
   const imagen = Image.create({
